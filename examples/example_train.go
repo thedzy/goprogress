@@ -12,18 +12,19 @@ func main() {
 	// Set parameters for the demo
 	total := 120
 	progress := 0
+	width := 50
 	min, max := 20, 200
 	var sum float32
 
-	goprogress.CreateProgress(goprogress.Options{
-		Total:         total,
-		Width:         50,
-		Title:         "Testing",
-		FillCharacter: '_',
-		BarColour:     []float32{1.0, 1.0, 0.0},
-		FillColour:    []float32{0.0, 0.0, 0.5},
-		Terminators:   []string{"▕", "▏"},
-		Mode:          1,
+	bar := goprogress.NewProgressBar(goprogress.StyleTrain, goprogress.Options{
+		Total:          total,
+		Width:          width,
+		Title:          "Loading",
+		BarText:        "=",
+		FillText:       strings.Repeat("_", width),
+		BarTextColour:  goprogress.Yellow(),
+		FillTextColour: goprogress.DkGrey(),
+		Terminators:    []string{"▕", "▏"},
 	})
 
 	var speeds []float32
@@ -39,15 +40,8 @@ func main() {
 	// sum = sum / 1000
 	speedProportion := desiredSpeed / sum * 1000
 
-	fmt.Println("ProgressBars")
-
-	// Train progress
-	fmt.Println("Train ProgressBar")
+	fmt.Println("1/4 demos")
 	animation := []string{
-		strings.Repeat("◟◧◨◝-", int(total/5)) + "◟◧◨◘◺",
-		strings.Repeat("◜◧◨◞-", int(total/5)) + "◜◧◨◘◺",
-	}
-	animation = []string{
 		strings.Repeat("◟◧◨◝-", int(total/5)) + "◟◧◨◘◺",
 		strings.Repeat("◜◧◨◞-", int(total/5)) + "◜◧◨◘◺",
 	}
@@ -56,16 +50,13 @@ func main() {
 		progress++
 		time.Sleep(time.Duration(speeds[progress]*speedProportion) * time.Millisecond)
 
-		// Update the progress bar
-		goprogress.DrawTrainProgressBar(progress, goprogress.Options{
-			Text:         animation[progress%2],
-			IgnoreColour: true,
-		})
+		// Update the wait bar
+		bar.SetBarText(animation[progress%2])
+		bar.Draw(progress)
 	}
 	fmt.Println("\n")
 
-	// Train progress
-	fmt.Println("Train ProgressBar")
+	fmt.Println("2/4 demos")
 	animation = []string{
 		strings.Repeat("◷◧◨◷-", int(total/5)) + "◷◧◨◘◺",
 		strings.Repeat("◶◧◨◶-", int(total/5)) + "◶◧◨◘◺",
@@ -73,32 +64,60 @@ func main() {
 		strings.Repeat("◴◧◨◴-", int(total/5)) + "◴◧◨◘◺",
 	}
 	progress = 0
+	bar.SetBarTextColour(goprogress.Grey())
+	bar.SetFillText("")
+
 	for progress < total {
 		progress++
 		time.Sleep(time.Duration(speeds[progress]*speedProportion) * time.Millisecond)
 
-		// Update the progress bar
-		goprogress.DrawTrainProgressBar(progress, goprogress.Options{
-			Text:         animation[progress%4],
-			IgnoreColour: true,
-		})
+		// Update the wait bar
+		bar.SetBarText(animation[progress%4])
+		bar.Draw(progress)
 	}
 	fmt.Println("\n")
 
-	// Train progress
-	fmt.Println("Train ProgressBar")
+	fmt.Println("3/4 demos")
+
 	progress = 0
+	bar.SetBarTextColour(goprogress.Black())
+	bar.SetBarColour(goprogress.White())
+	bar.SetBarText(strings.Repeat("¸¸♬·¯·♩¸¸♪·¯·♫", total/15))
+	bar.SetFillText(">")
+
 	for progress < total {
 		progress++
 		time.Sleep(time.Duration(speeds[progress]*speedProportion) * time.Millisecond)
 
-		// Update the progress bar
-		goprogress.DrawTrainProgressBar(progress, goprogress.Options{
-			Text:          strings.Repeat("¸¸♬·¯·♩¸¸♪·¯·♫", total/15),
-			BarColour:     []float32{1.0, 1.0, 0.0},
-			FillCharacter: '-',
-			IgnoreColour:  false,
-		})
+		// Update the wait bar
+		bar.Draw(progress)
 	}
 	fmt.Println("\n")
+
+	fmt.Println("4/4 demos")
+
+	progress = 0
+	bar.SetBarTextColour(goprogress.Black())
+	bar.SetBarColour(goprogress.White())
+	bar.SetFillColour(goprogress.Black())
+	bar.SetFillTextColour(goprogress.White())
+	bar.SetBarText("<")
+	bar.SetFillText(">")
+
+	for progress < total {
+		progress++
+		time.Sleep(time.Duration(speeds[progress]*speedProportion) * time.Millisecond)
+
+		// Update the wait bar
+		bar.Draw(progress)
+	}
+	fmt.Println("\n")
+
+}
+
+func abs(n int) int {
+	if n < 0 {
+		return -n
+	}
+	return n
 }

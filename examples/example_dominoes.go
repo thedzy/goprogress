@@ -3,34 +3,33 @@ package main
 import (
 	"fmt"
 	"github.com/thedzy/goprogress"
+	"strings"
 	"time"
 )
 
 func main() {
-	// Set parameters for the demo
-	total := 25
-	goprogress.CreateProgress(goprogress.Options{
-		Total:               total,
-		Width:               25,
-		Title:               "Loading",
-		Footer:              "",
-		BarCharacter:        '_',
-		BarDividerCharacter: '/',
-		FillCharacter:       '|',
-		BarColour:           []float32{0.5, 0.5, 0.5},
-		FillColour:          []float32{1.0, 1.0, 1.0},
-		Terminators:         []string{"[", "]"},
+	total := 100
+	progress := 0
+
+	bar := goprogress.NewProgressBar(goprogress.StyleTrain, goprogress.Options{
+		Total:       total,
+		Width:       80,
+		BarText:     strings.Repeat("_", 80),
+		FillText:    "/" + strings.Repeat("|", 80),
+		Title:       "Loading",
+		Terminators: []string{"_", ""},
+		Mode:        goprogress.ModePercent,
 	})
 
-	// Simple
-	fmt.Println("Simple ProgressBar")
-	progress := 0
+	bar.SetMode(goprogress.ModeProportion)
+
+	fmt.Println("Detailed Bar")
 	for progress < total {
 		progress++
 		time.Sleep(100 * time.Millisecond)
 
-		// Update the progress bar
-		goprogress.DrawSimpleProgressBar(progress)
+		// Update the wait bar
+		bar.Draw(progress)
 	}
 	fmt.Println("\n")
 }

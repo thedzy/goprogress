@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/thedzy/goprogress"
 	"io/ioutil"
-	"math/rand"
 	"path/filepath"
 	"time"
 )
@@ -31,29 +30,31 @@ func main() {
 	total := len(apps) - 1
 	progress := 0
 
-	goprogress.CreateProgress(goprogress.Options{
-		Total:           total,
-		Width:           80,
-		Title:           "Searching",
-		Footer:          "apps",
-		BarColour:       []float32{1.0, 1.0, 0.0},
-		FillColour:      []float32{0.0, 0.0, 0.5},
-		LightTextColour: []float32{0.9, 0.0, 0.0},
-		DarkTextColour:  []float32{0.0, 0.0, 0.9},
-		InvertColours:   true,
-		Terminators:     []string{"▕", "▏"},
-		Mode:            3,
+	bar := goprogress.NewProgressBar(goprogress.StyleDetailed, goprogress.Options{
+		Total:              total,
+		Width:              80,
+		Title:              "Searching",
+		Footer:             "apps",
+		BarColour:          []float32{1.0, 1.0, 0.0},
+		FillColour:         []float32{0.0, 0.0, 0.5},
+		LightTextColour:    []float32{0.9, 0.0, 0.0},
+		DarkTextColour:     []float32{0.0, 0.0, 0.9},
+		DynamicTextColours: true,
+		Terminators:        []string{"▕", "▏"},
+		Mode:               3,
 	})
 
-	// Detailed with text
-	fmt.Println("Detailed ProgressBar")
-	for progress <= total {
-		time.Sleep(time.Duration(rand.Intn(150-20)+20) * time.Millisecond)
+	bar.SetMode(goprogress.ModeProportion)
 
-		// Update the progress bar
-		goprogress.DrawDetailedProgressBar(progress, goprogress.Options{
-			Text: apps[progress]})
+	fmt.Println("Detailed Bar")
+	for progress < total {
 		progress++
+		time.Sleep(100 * time.Millisecond)
+
+		// Update the wait bar
+		bar.SetBarText(apps[progress])
+		bar.Draw(progress)
 	}
 	fmt.Println("\n")
+
 }
