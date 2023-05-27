@@ -33,24 +33,15 @@ func main() {
 	min, max := 20, 200
 	var sum float32
 
-	goprogress.CreateProgress(goprogress.Options{
-		Total:               total,
-		Width:               50,
-		Title:               "Testing",
-		Text:                "◢◤  ◢◤  ",
-		Footer:              "",
-		BarCharacter:        '=',
-		BarDividerCharacter: '>',
-		FillCharacter:       '-',
-		BarColour:           []float32{1.0, 1.0, 0.0},
-		FillColour:          []float32{0.0, 0.0, 0.5},
-		LightTextColour:     []float32{0.9, 0.0, 0.0},
-		DarkTextColour:      []float32{0.0, 0.0, 0.9},
-		IgnoreColour:        true,
-		Partials:            []string{" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉"},
-		Terminators:         []string{"▕", "▏"},
-		Mode:                2,
-	})
+	options := goprogress.Options{
+		Total:              total,
+		Width:              50,
+		BarText:            " ◢◤  ◢◤ ",
+		FillText:           "|",
+		Title:              "Loading",
+		DynamicTextColours: true,
+		Terminators:        []string{"[", "]"},
+	}
 
 	var speeds []float32
 	desiredSpeed := float32(5.0)
@@ -67,87 +58,70 @@ func main() {
 
 	fmt.Println("ProgressBars")
 
-	// Wait bar
-	fmt.Println("WaitBar")
+	bar := goprogress.NewProgressBar(goprogress.StyleWait, options)
+
+	fmt.Println("Wait Bar")
 	progress = 0
 	for progress < total {
 		progress++
 		time.Sleep(time.Duration(speeds[progress]*speedProportion) * time.Millisecond)
 
-		// Update the progress bar
-		if progress%3 == 0 {
-			goprogress.DrawWaitBar()
-		}
+		// Update the bar
+		bar.Draw(progress)
 	}
 	fmt.Println("\n")
 
-	goprogress.SetFooter("")
-	goprogress.SetModePercent()
-
-	// Simple
-	fmt.Println("Simple ProgressBar")
+	fmt.Println("Simple Bar")
+	bar.SetStyleSimple()
 	progress = 0
 	for progress < total {
 		progress++
 		time.Sleep(time.Duration(speeds[progress]*speedProportion) * time.Millisecond)
 
-		// Update the progress bar
-		goprogress.DrawSimpleProgressBar(progress)
+		// Update the bar
+		bar.Draw(progress)
 	}
 	fmt.Println("\n")
 
-	goprogress.SetText("◧◨◡-◡◧◨◡-◡◧◨◡-◡◧◨◡-◡◧◨◡-◡◧◨◡-◡◧◨◡-◡◧◨◡-◡◧◨◡-◡◧◨◘◺")
-	goprogress.SetFillCharacter('_')
-	goprogress.SetModeTimer()
-	goprogress.SetFooter("left")
-
-	// Train progress
-	fmt.Println("Train ProgressBar")
+	fmt.Println("Train Bar")
 	progress = 0
+	bar.SetStyleTrain()
+	bar.SetModeTimer()
 	for progress < total {
 		progress++
 		time.Sleep(time.Duration(speeds[progress]*speedProportion) * time.Millisecond)
 
-		// Update the progress bar
-		goprogress.DrawTrainProgressBar(progress)
+		// Update the bar
+		bar.Draw(progress)
 	}
 	fmt.Println("\n")
 
-	goprogress.SetFooter("files")
-	goprogress.SetModePortions()
-
-	// Detailed with text
-	fmt.Println("Detailed ProgressBar (does not respect the IgnoreColour option)")
+	fmt.Println("Detailed Bar")
 	progress = 0
-	index := 0
-	for progress < total {
-		if progress%3 == 0 {
-			index += 1
-		}
-
-		progress++
-		time.Sleep(time.Duration(speeds[progress]*speedProportion) * time.Millisecond)
-
-		// Update the progress bar
-		goprogress.DrawDetailedProgressBar(progress, goprogress.Options{
-			Text: apps[index]})
-	}
-	fmt.Println("\n")
-
-	goprogress.SetFooter(" ")
-	goprogress.SetModePercent()
-
-	// Smooth with sub divided
-	fmt.Println("Smooth ProgressBar")
-	progress = 0
+	bar.SetStyleDetailed()
+	bar.SetModePortions()
+	bar.SetFooter("apps")
 	for progress < total {
 		progress++
 		time.Sleep(time.Duration(speeds[progress]*speedProportion) * time.Millisecond)
 
-		// Update the progress bar
-		goprogress.DrawSmoothProgressBar(progress)
+		// Update the bar
+		bar.SetBarText(apps[progress])
+		bar.Draw(progress)
 	}
 	fmt.Println("\n")
 
-	fmt.Println("All completed")
+	fmt.Println("Smooth Bar")
+	progress = 0
+	bar.SetStyleSmooth()
+	bar.SetModePercent()
+	for progress < total {
+		progress++
+		time.Sleep(time.Duration(speeds[progress]*speedProportion) * time.Millisecond)
+
+		// Update the bar
+		bar.Draw(progress)
+	}
+	fmt.Println("\n")
+
 }

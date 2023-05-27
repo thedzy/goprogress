@@ -9,26 +9,22 @@ import (
 func main() {
 	// Set parameters for the demo
 	total := 100
-	goprogress.CreateProgress(goprogress.Options{
-		Width:               25,
-		Title:               "Loading",
-		Footer:              "",
-		BarCharacter:        '=',
-		BarDividerCharacter: '=',
-		FillCharacter:       ' ',
-		IgnoreColour:        true,
-		Terminators:         []string{"[", "]"},
+	progress := 0
+
+	bar := goprogress.NewProgressBar(goprogress.StyleSimple, goprogress.Options{
+		Total:       total,
+		BarText:     "=",
+		Title:       "Loading",
+		Terminators: []string{"[", "]"},
 	})
 
-	// Simple
-	fmt.Println("Simple ProgressBar")
-	progress := 0
+	fmt.Println("Detailed Bar")
 	for progress < total {
 		progress++
 		time.Sleep(100 * time.Millisecond)
 
-		// Update the progress bar
-		goprogress.DrawSimpleProgressBar(progress)
+		// Update the wait bar
+		bar.Draw(progress)
 	}
 	fmt.Println("\n")
 }

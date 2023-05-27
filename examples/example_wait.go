@@ -10,82 +10,68 @@ func main() {
 	// Set parameters for the demo
 	total := 100
 	progress := 0
-	fmt.Println("WaitBars")
-	goprogress.CreateProgress(goprogress.Options{
-		Total:      total,
-		Width:      20,
-		Title:      "Waiting",
-		FillColour: []float32{1.0, 1.0, 0.0},
-		BarColour:  []float32{0.0, 0.05, 0.6},
+
+	bar := goprogress.NewProgressBar(goprogress.StyleWait, goprogress.Options{
+		Total: total,
+		Width: 25,
+		Title: "Loading",
 	})
 
-	// Wait bar
-	progress = 0
+	fmt.Println("1/4 Bar")
+	bar.SetBarText("▁▂▂▃▄▅▆▇▇██▇▇▆▅▄▃▂▂▁")
+	bar.SetBarTextColour(goprogress.Red())
+	bar.SetBarColour(goprogress.Black())
 	for progress < total {
 		progress++
-		time.Sleep(time.Duration(50) * time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 
-		// Update the progress bar
-		goprogress.DrawWaitBar(goprogress.Options{
-			Text:       "▁▂▂▃▄▅▆▇▇██▇▇▆▅▄▃▂▂▁",
-			FillColour: []float32{1.0, 1.0, 0.0},
-			BarColour:  []float32{0.0, 0.0, 1.0},
-		})
+		// Update the wait bar
+		bar.Draw(progress)
 	}
 	fmt.Println("\n")
 
+	fmt.Println("2/4 Bar")
 	progress = 0
-	for progress < total/5 {
+	bar.SetBarText(" ◢◤")
+	bar.SetBarTextColour(goprogress.Yellow())
+	bar.SetBarColour(goprogress.DkBlue())
+	for progress < total {
 		progress++
-		time.Sleep(time.Duration(250) * time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 
-		// Update the progress bar
-		goprogress.DrawWaitBar(goprogress.Options{
-			Text:       " ◢◤",
-			FillColour: []float32{1.0, 1.0, 0.0},
-			BarColour:  []float32{0.0, 0.0, 0.0},
-		})
+		// Update the wait bar
+		bar.Draw(progress)
 	}
 	fmt.Println("\n")
 
+	fmt.Println("3/4 Bar")
 	progress = 0
-	for progress < total/5 {
-		progress++
-		time.Sleep(time.Duration(250) * time.Millisecond)
 
-		// Update the progress bar
-		goprogress.DrawWaitBar(goprogress.Options{
-			Text:         "▷▶ ▸ ",
-			IgnoreColour: true,
-		})
+	bar.SetBarText(" ▷▶ ▸")
+	bar.SetBarTextColour(goprogress.Yellow())
+	bar.SetBarColour(goprogress.DkBlue())
+	for progress < total {
+		progress++
+		time.Sleep(100 * time.Millisecond)
+
+		// Update the wait bar
+		bar.Draw(progress)
 	}
 	fmt.Println("\n")
 
+	fmt.Println("4/4 Bar")
 	progress = 0
-	for progress < total/5 {
-		progress++
-		time.Sleep(time.Duration(250) * time.Millisecond)
 
-		// Update the progress bar
-		goprogress.DrawWaitBar(goprogress.Options{
-			Text:       "◠◡",
-			FillColour: []float32{0.0, 0.0, 0.0},
-			BarColour:  []float32{0.0, 1.0, 0.0},
-		})
+	bar.SetBarText("◠◡")
+	bar.SetBarTextColour(goprogress.Yellow())
+	bar.SetBarColour(goprogress.DkRed())
+	for progress < total {
+		progress++
+		time.Sleep(100 * time.Millisecond)
+
+		// Update the wait bar
+		bar.Draw(progress)
 	}
 	fmt.Println("\n")
 
-	progress = 0
-	for progress < total/5 {
-		progress++
-		time.Sleep(time.Duration(250) * time.Millisecond)
-
-		// Update the progress bar
-		goprogress.DrawWaitBar(goprogress.Options{
-			Text:       "◴◵◶◷",
-			FillColour: []float32{0.0, 0.0, 0.0},
-			BarColour:  []float32{0.0, 1.0, 0.0},
-		})
-	}
-	fmt.Println("\n")
 }
