@@ -1,4 +1,4 @@
-module github.com/thedzy/goprogress
+module github.com/thedzy/goprogress/v2
 
 go 1.20
 
