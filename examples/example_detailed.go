@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/thedzy/goprogress"
+	"github.com/thedzy/goprogress/v2"
 	"io/ioutil"
 	"path/filepath"
 	"time"
