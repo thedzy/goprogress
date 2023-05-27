@@ -399,6 +399,11 @@ Add animation to moving bars
 
 Empty string in wait bar causes div by zero, will fix very soon
 
+### Troubleshooting
+ I learning why I have never seen a v2 of a go module. \
+If it's trying to download a version that does not exist: \
+`GOPROXY=direct go get github.com/thedzy/goprogress/v2@v2.0.0`
+
 ## New
 
 ### 2.0
