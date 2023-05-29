@@ -117,7 +117,7 @@ NoColour()
 ### Disection
 
 ```ignorelang
-| Title  | Text                                            | Mode   | Footer  |
+| Title  | Bar Text  | Bar Fill                            | Mode   | Footer  |
  Testing |===========--------------------------------------| 120/120 files
          | Width                                           |
          | Bar       | Fill                                |
@@ -170,6 +170,7 @@ Options with no effect
 ### Smooth (gororess.DrawSmoothProgressBar)
 
 ![smooth](media/progress_smooth.gif)
+![smooth](media/progress_smooth_zoomed.gif) \
 A bar that uses fractional characters to represent a smoother movement
 
 Options with no effect
