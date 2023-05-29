@@ -17,7 +17,6 @@ func main() {
 		BarText: " ",
 		Mode:    goprogress.ModeNone,
 	})
-
 	lastColour := goprogress.White()
 	colours := [][]float32{
 		goprogress.LtGrey(),
@@ -48,9 +47,7 @@ func main() {
 		goprogress.Yellow(),
 		goprogress.DkYellow(),
 	}
-
 	for _, colour := range colours {
-
 		// Smooth with sub divided
 		bar.SetBarColour(colour)
 		bar.SetFillColour(lastColour)
@@ -62,9 +59,28 @@ func main() {
 			time.Sleep(time.Duration(10) * time.Millisecond)
 
 			// Update the progress bar
-			bar.Draw(progress)
+			bar.Draw(progress, goprogress.Options{
+				FillColour: goprogress.Black(),
+			})
 		}
 		fmt.Println("\n")
-		lastColour = colour
+
 	}
+
+	// Smooth with sub divided
+	fmt.Println("Smooth ProgressBar with colour shifting")
+
+	progress = 0
+	fractional := 1.0 / float32(total)
+	for progress < total {
+		progress++
+		time.Sleep(time.Duration(10) * time.Millisecond)
+
+		// Update the progress bar
+		bar.Draw(progress, goprogress.Options{
+			BarColour:  []float32{1.0 - float32(progress)*fractional, 0.0, float32(progress) * fractional},
+			FillColour: goprogress.Black(),
+		})
+	}
+	fmt.Println("\n")
 }
