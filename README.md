@@ -397,10 +397,11 @@ Add animation to moving bars
 
 ## State?
 
-Empty string in wait bar causes div by zero, will fix very soon
+~~Empty string in wait bar causes div by zero, will fix very soon~~
 
 ### Troubleshooting
- I learning why I have never seen a v2 of a go module. \
+
+I learning why I have never seen a v2 of a go module... \
 If it's trying to download a version that does not exist: \
 `GOPROXY=direct go get github.com/thedzy/goprogress/v2@v2.0.0`
 
@@ -417,3 +418,10 @@ If it's trying to download a version that does not exist: \
 - More of a proper class structure and can be instantiated
 - Using constants for things like Mode (and now style) to be set
 - Working windows sizing
+
+### 2.1.1
+
+- Updated to take options at the Draw command. Due to limitations with GO, you cannot override any parameter with 0, or
+  false or "". One day I will make this pointers, but there is a lot of change to accommodate
+- Slight reorganisation in code
+- Fixed an error when passing an empty string to the wait bar.
