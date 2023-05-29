@@ -143,28 +143,6 @@ func getWindowWidth() int {
 	return int(winSize.Col - 1)
 }
 
-// validationColour Validate a colour and modify it to conformity
-func validationColour(colour []float32) []float32 {
-	// Verify that no colour is above 1.0 or below 0.0
-
-	if colour[0] == -1.0 && colour[0] == colour[1] && colour[1] == colour[2] {
-		return colour
-	}
-
-	for index, value := range colour[0:3] {
-		if value > 1 {
-			fmt.Println("Error: One or more colour values are greater than 1 and been set to 1")
-			colour[index] = 1
-
-		} else if value < 0 {
-			fmt.Println("Error: One or more colour values are greater than 0 and been set to 0")
-			colour[index] = 0
-		}
-	}
-
-	return colour
-}
-
 // stringToArray Turn a string into an array to strings for slicing or long unicodes
 func stringToArray(text string) []string {
 	var textChars []string
@@ -220,4 +198,12 @@ func stringArraySizer(strArray []string, length int, repeat bool, alignRight boo
 			return append(strArray, paddedArray...)
 		}
 	}
+}
+
+func countUniqueCharacters(s string) int {
+	uniqueSet := make(map[rune]bool)
+	for _, char := range s {
+		uniqueSet[char] = true
+	}
+	return len(uniqueSet)
 }

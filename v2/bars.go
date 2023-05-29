@@ -29,61 +29,7 @@ func init() {
 // NewProgressBar Create a new instance of a progress bar
 func NewProgressBar(style int8, options Options) *bar {
 
-	if options.Total == 0 {
-		options.Total = 100
-	}
-
-	if options.Width == 0 {
-		options.Width = 50
-	}
-
-	if options.BarColour == nil || len(options.BarColour) < 3 {
-		options.BarColour = NoColour()
-	} else {
-		options.BarColour = validationColour(options.BarColour)
-	}
-
-	if options.FillColour == nil || len(options.FillColour) < 3 {
-		options.FillColour = NoColour()
-	} else {
-		options.FillColour = validationColour(options.FillColour)
-	}
-
-	if options.BarTextColour == nil || len(options.BarTextColour) < 3 {
-		options.BarTextColour = NoColour()
-	} else {
-		options.BarTextColour = validationColour(options.BarTextColour)
-	}
-
-	if options.FillTextColour == nil || len(options.FillTextColour) < 3 {
-		options.FillTextColour = NoColour()
-	} else {
-		options.FillTextColour = validationColour(options.FillTextColour)
-	}
-
-	if options.LightTextColour == nil || len(options.LightTextColour) < 3 {
-		options.LightTextColour = White()
-	} else {
-		options.LightTextColour = validationColour(options.LightTextColour)
-	}
-
-	if options.DarkTextColour == nil || len(options.DarkTextColour) < 3 {
-		options.DarkTextColour = Black()
-	} else {
-		options.DarkTextColour = validationColour(options.DarkTextColour)
-	}
-
-	if len(options.Partials) == 0 {
-		options.Partials = []string{" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉"}
-	}
-
-	if len(options.Terminators) < 2 {
-		options.Terminators = []string{"▕", "▏"}
-	}
-
-	if options.Mode == 0 {
-		options.Mode = 1
-	}
+	options = validateOptions(options)
 
 	progressBar := bar{
 		style:   style,
@@ -99,9 +45,14 @@ func (o *bar) ResetTimer() {
 }
 
 // Draw the progress with text (and colour)
-func (o *bar) Draw(progress int, options ...Options) {
+func (o *bar) Draw(progress int, overrides ...Options) {
 
-	_ = options
+	var options Options
+	if len(overrides) > 0 {
+		options = mergeSettings(o.options, overrides[0])
+	} else {
+		options = o.options
+	}
 
 	counter := o.nextDigit()
 	_ = counter
@@ -109,23 +60,28 @@ func (o *bar) Draw(progress int, options ...Options) {
 		o.timer = time.Now()
 	}
 
-	colours := getColours(o.options)
+	colours := getColours(options)
 
-	footer := getFooter(progress, o.timer, o.options)
-	footer = fmt.Sprintf("%s %s", footer, o.options.Footer)
+	footer := getFooter(progress, o.timer, options)
+	footer = fmt.Sprintf("%s %s", footer, options.Footer)
 
 	// Keep the minimum width of the bar to 25
-	width := getFinalWidth(o.options.Width, o.options.Title, footer, o.options.Terminators, 0)
+	width := getFinalWidth(options.Width, options.Title, footer, options.Terminators, 0)
 
 	// Calculate the fill of the bar
-	barWidth := int(float64(progress) / float64(o.options.Total) * float64(width))
+	barWidth := int(float64(progress) / float64(options.Total) * float64(width))
 	fillWidth := width - barWidth
 
 	var bar string
 	var fill string
 	switch o.style {
 	case StyleWait:
-		barText := stringToArray(o.options.BarText)
+		barText := stringToArray(options.BarText)
+
+		// Ensure wait bar is not empty
+		if len(strings.TrimSpace(options.BarText)) == 0 {
+			barText = []string{"/", " "}
+		}
 		barTextLen := len(barText)
 
 		barText = stringArraySizer(
@@ -140,19 +96,18 @@ func (o *bar) Draw(progress int, options ...Options) {
 		bar = arrayToString(barText[0:width])
 		footer = strings.Repeat(" ", len(footer))
 	case StyleTrain:
-		barText := stringToArray(o.options.BarText)
-		barFill := stringToArray(o.options.FillText)
+		barText := stringToArray(options.BarText)
+		barFill := stringToArray(options.FillText)
 
 		bar = arrayToString(stringArraySizer(barText, barWidth, false, true))
 		fill = arrayToString(stringArraySizer(barFill, fillWidth, false, false))
 	case StyleDetailed:
-		// Detailed
-		barText := stringArraySizer(stringToArray(o.options.BarText), width, false, false)
+		barText := stringArraySizer(stringToArray(options.BarText), width, false, false)
 
 		bar = arrayToString(barText[0:barWidth])
 		fill = arrayToString(barText[barWidth:])
 
-		alterOptions := o.options
+		alterOptions := options
 		if colours.BarColour == "" {
 			alterOptions.BarColour = LtGrey()
 		}
@@ -162,10 +117,9 @@ func (o *bar) Draw(progress int, options ...Options) {
 
 		colours = getColours(alterOptions)
 	case StyleSmooth:
-		// Smooth
-		partialsCount := len(o.options.Partials)
+		partialsCount := len(options.Partials)
 		width = width * partialsCount
-		barWidth := int(float64(progress) / float64(o.options.Total) * float64(width))
+		barWidth := int(float64(progress) / float64(options.Total) * float64(width))
 
 		quotient := barWidth / partialsCount
 		remainder := barWidth % partialsCount
@@ -173,13 +127,13 @@ func (o *bar) Draw(progress int, options ...Options) {
 		bar = strings.Repeat("▉", quotient)
 		fill = arrayToString(
 			stringToArray(
-				o.options.Partials[remainder] +
+				options.Partials[remainder] +
 					strings.Repeat(" ",
 						(width/partialsCount)-quotient),
 			)[0 : (width/partialsCount)-quotient],
 		)
 
-		alterOptions := o.options
+		alterOptions := options
 		if colours.BarColour == "" {
 			alterOptions.BarColour = Grey()
 		}
@@ -191,22 +145,23 @@ func (o *bar) Draw(progress int, options ...Options) {
 	case StyleSimple:
 		fallthrough
 	default:
-		barText := stringToArray(o.options.BarText)
-		barFill := stringToArray(o.options.FillText)
+		barText := stringToArray(options.BarText)
+		barFill := stringToArray(options.FillText)
 
 		bar = arrayToString(stringArraySizer(barText, barWidth, true, true))
 		fill = arrayToString(stringArraySizer(barFill, fillWidth, true, false))
 	}
+
 	// Prevent bar for exceeding 100%
-	if progress >= o.options.Total {
-		progress = o.options.Total
+	if progress >= options.Total {
+		progress = options.Total
 		o.timer = time.Time{}
 	}
 
 	// Update the progress bar
 	fmt.Printf("\r %s %s%s%s%s%s%s%s%s%s%s%s\r",
-		o.options.Title,
-		o.options.Terminators[0],
+		options.Title,
+		options.Terminators[0],
 		colours.BarColour,
 		colours.BarTextColour,
 		bar,
@@ -215,7 +170,7 @@ func (o *bar) Draw(progress int, options ...Options) {
 		colours.FillTextColour,
 		fill,
 		"\u001B[0;m",
-		o.options.Terminators[1],
+		options.Terminators[1],
 		footer)
 }
 

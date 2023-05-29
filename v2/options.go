@@ -1,5 +1,10 @@
 package goprogress
 
+import (
+	"fmt"
+	"reflect"
+)
+
 // Options that apply to all progress bars
 type Options struct {
 	Total              int
@@ -228,4 +233,140 @@ func (o *bar) SetMode(mode int8) {
 }
 func (o *bar) GetMode() int8 {
 	return o.options.Mode
+}
+
+// mergeSettings Merge two settings/options and validate the options
+func mergeSettings(original Options, updated Options) Options {
+	// Assign to some variables for modification
+	originalValue := reflect.ValueOf(&original).Elem()
+	updatedValue := reflect.ValueOf(updated)
+
+	for i := 0; i < originalValue.NumField(); i++ {
+		field := originalValue.Field(i)
+		updatedField := updatedValue.Field(i)
+
+		if !reflect.ValueOf(updatedField.Interface()).IsZero() {
+			field.Set(updatedField)
+		}
+	}
+
+	// Verify we have 2 terminators
+	if len(original.Terminators) < 2 {
+		original.Terminators = append(original.Terminators, "", "")
+	}
+
+	// Keep the minimum width of the bar to 25 and the window width
+	if original.Width < 10 {
+		original.Width = 10
+	}
+	if original.Width > getWindowWidth() {
+		original.Width = getWindowWidth()
+	}
+
+	// Verify that no colour is above 1.0 or below 0.0
+	colours := [][]float32{original.FillColour, original.BarColour, original.LightTextColour, original.DarkTextColour}
+	for _, array := range colours {
+		for index, value := range array[0:3] {
+			if value > 1 {
+				fmt.Println("Error: One or more colour values are greater than 1 and been set to 1")
+				array[index] = 1
+			}
+			if value < 0 {
+				fmt.Println("Error: One or more colour values are greater than 0 and been set to 0")
+				array[index] = 0
+			}
+		}
+	}
+
+	// Verify we have at least one partial
+	if len(original.Partials) == 0 {
+		original.Partials = []string{" "}
+	}
+
+	return original
+}
+
+// validateOptions Check all options for valid parameters
+func validateOptions(options Options) Options {
+
+	if options.Total < 1 {
+		options.Total = 100
+	}
+
+	if options.Width < 1 {
+		options.Width = 50
+	}
+
+	if options.BarColour == nil || len(options.BarColour) < 3 {
+		options.BarColour = NoColour()
+	} else {
+		options.BarColour = validationColour(options.BarColour)
+	}
+
+	if options.FillColour == nil || len(options.FillColour) < 3 {
+		options.FillColour = NoColour()
+	} else {
+		options.FillColour = validationColour(options.FillColour)
+	}
+
+	if options.BarTextColour == nil || len(options.BarTextColour) < 3 {
+		options.BarTextColour = NoColour()
+	} else {
+		options.BarTextColour = validationColour(options.BarTextColour)
+	}
+
+	if options.FillTextColour == nil || len(options.FillTextColour) < 3 {
+		options.FillTextColour = NoColour()
+	} else {
+		options.FillTextColour = validationColour(options.FillTextColour)
+	}
+
+	if options.LightTextColour == nil || len(options.LightTextColour) < 3 {
+		options.LightTextColour = White()
+	} else {
+		options.LightTextColour = validationColour(options.LightTextColour)
+	}
+
+	if options.DarkTextColour == nil || len(options.DarkTextColour) < 3 {
+		options.DarkTextColour = Black()
+	} else {
+		options.DarkTextColour = validationColour(options.DarkTextColour)
+	}
+
+	if len(options.Partials) == 0 {
+		options.Partials = []string{" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉"}
+	}
+
+	if len(options.Terminators) < 2 {
+		options.Terminators = []string{"▕", "▏"}
+	}
+
+	if options.Mode < 1 {
+		options.Mode = 1
+	}
+
+	return options
+
+}
+
+// validationColour Validate a colour and modify it to conformity
+func validationColour(colour []float32) []float32 {
+	// Verify that no colour is above 1.0 or below 0.0
+
+	if colour[0] == -1.0 && colour[0] == colour[1] && colour[1] == colour[2] {
+		return colour
+	}
+
+	for index, value := range colour[0:3] {
+		if value > 1 {
+			fmt.Println("Error: One or more colour values are greater than 1 and been set to 1")
+			colour[index] = 1
+
+		} else if value < 0 {
+			fmt.Println("Error: One or more colour values are greater than 0 and been set to 0")
+			colour[index] = 0
+		}
+	}
+
+	return colour
 }
