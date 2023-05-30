@@ -40,8 +40,9 @@ func NewProgressBar(style int8, options Options) *bar {
 }
 
 // ResetTimer Reset the timer if a bar does not complete
-func (o *bar) ResetTimer() {
+func (o *bar) ResetTimer() *bar {
 	o.timer = time.Time{}
+	return o
 }
 
 // Draw the progress with text (and colour)
@@ -55,7 +56,6 @@ func (o *bar) Draw(progress int, overrides ...Options) {
 	}
 
 	counter := o.nextDigit()
-	_ = counter
 	if o.timer.IsZero() {
 		o.timer = time.Now()
 	}
@@ -174,6 +174,7 @@ func (o *bar) Draw(progress int, overrides ...Options) {
 		footer)
 }
 
+// nextDigit Incrementer for wait progress
 func (o *bar) nextDigit() int64 {
 	o.counter += 1
 	if o.counter == math.MaxInt64 {
