@@ -7,7 +7,6 @@ import (
 )
 
 func main() {
-	// Request greeting messages for the names.
 	total := 120
 	progress := 0
 
@@ -48,9 +47,10 @@ func main() {
 		goprogress.DkYellow(),
 	}
 	for _, colour := range colours {
-		// Smooth with sub divided
 		bar.SetBarColour(colour)
 		bar.SetFillColour(lastColour)
+
+		// Smooth with fraction al character widths
 		fmt.Println("Smooth ProgressBar")
 
 		progress = 0
@@ -67,9 +67,8 @@ func main() {
 
 	}
 
-	// Smooth with sub divided
+	// Smooth with fraction al character widths
 	fmt.Println("Smooth ProgressBar with colour shifting")
-
 	progress = 0
 	fractional := 1.0 / float32(total)
 	for progress < total {

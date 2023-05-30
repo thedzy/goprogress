@@ -5,6 +5,7 @@ import (
 	"github.com/thedzy/goprogress/v2"
 	"io/ioutil"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -46,13 +47,25 @@ func main() {
 
 	bar.SetMode(goprogress.ModeProportion)
 
-	fmt.Println("Detailed Bar")
+	fmt.Println("Detailed Bar 1/2")
 	for progress < total {
 		progress++
 		time.Sleep(100 * time.Millisecond)
 
 		// Update the wait bar
 		bar.SetBarText(apps[progress])
+		bar.Draw(progress)
+	}
+	fmt.Println("\n")
+
+	fmt.Println("Detailed Bar 2/2")
+	bar.SetBarText(strings.Repeat("◠◡", total/2))
+	progress = 0
+	for progress < total {
+		progress++
+		time.Sleep(100 * time.Millisecond)
+
+		// Update the wait bar
 		bar.Draw(progress)
 	}
 	fmt.Println("\n")

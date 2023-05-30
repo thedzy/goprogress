@@ -17,7 +17,7 @@ func main() {
 		Title: "Loading",
 	})
 
-	fmt.Println("1/4 Bar")
+	fmt.Println("Wait bar 1/4")
 	bar.SetBarText("▁▂▂▃▄▅▆▇▇██▇▇▆▅▄▃▂▂▁")
 	bar.SetBarTextColour(goprogress.Red())
 	bar.SetBarColour(goprogress.Black())
@@ -30,11 +30,11 @@ func main() {
 	}
 	fmt.Println("\n")
 
-	fmt.Println("2/4 Bar")
+	fmt.Println("Wait bar 2/4")
 	progress = 0
-	bar.SetBarText(" ◢◤")
-	bar.SetBarTextColour(goprogress.Yellow())
-	bar.SetBarColour(goprogress.DkBlue())
+	bar.SetBarText(" ◢◤").
+		SetBarTextColour(goprogress.Yellow()).
+		SetBarColour(goprogress.DkBlue())
 	for progress < total {
 		progress++
 		time.Sleep(100 * time.Millisecond)
@@ -44,12 +44,12 @@ func main() {
 	}
 	fmt.Println("\n")
 
-	fmt.Println("3/4 Bar")
+	fmt.Println("Wait bar 3/4")
 	progress = 0
 
-	bar.SetBarText(" ▷▶ ▸")
-	bar.SetBarTextColour(goprogress.Yellow())
-	bar.SetBarColour(goprogress.DkBlue())
+	bar.SetBarText(" ▷▶ ▸").
+		SetBarTextColour(goprogress.Yellow()).
+		SetBarColour(goprogress.DkBlue())
 	for progress < total {
 		progress++
 		time.Sleep(100 * time.Millisecond)
@@ -59,12 +59,12 @@ func main() {
 	}
 	fmt.Println("\n")
 
-	fmt.Println("4/4 Bar")
+	fmt.Println("Wait bar 4/4")
 	progress = 0
 
-	bar.SetBarText("◠◡")
-	bar.SetBarTextColour(goprogress.Yellow())
-	bar.SetBarColour(goprogress.DkRed())
+	bar.SetBarText("◠◡").
+		SetBarTextColour(goprogress.Yellow()).
+		SetBarColour(goprogress.DkRed())
 	for progress < total {
 		progress++
 		time.Sleep(100 * time.Millisecond)

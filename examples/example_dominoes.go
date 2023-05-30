@@ -23,7 +23,7 @@ func main() {
 
 	bar.SetMode(goprogress.ModeProportion)
 
-	fmt.Println("Detailed Bar")
+	fmt.Println("Train Bar 1/1")
 	for progress < total {
 		progress++
 		time.Sleep(100 * time.Millisecond)

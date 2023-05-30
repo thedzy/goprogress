@@ -18,7 +18,7 @@ func main() {
 		Terminators: []string{"[", "]"},
 	})
 
-	fmt.Println("1/4")
+	fmt.Println("Simple Bar 1/4")
 	for progress < total {
 		progress++
 		time.Sleep(25 * time.Millisecond)
@@ -28,7 +28,7 @@ func main() {
 	}
 	fmt.Println("\n")
 
-	fmt.Println("2/4")
+	fmt.Println("Simple Bar 2/4")
 	bar.SetBarColour(goprogress.Yellow()).
 		SetFillColour(goprogress.Blue()).
 		SetBarText("")
@@ -42,7 +42,7 @@ func main() {
 	}
 	fmt.Println("\n")
 
-	fmt.Println("3/4")
+	fmt.Println("Simple Bar 3/4")
 	bar.SetBarColour(goprogress.NoColour()).
 		SetFillColour(goprogress.NoColour()).
 		SetBarTextColour(goprogress.Red())
@@ -61,7 +61,7 @@ func main() {
 	}
 	fmt.Println("\n")
 
-	fmt.Println("4 /4")
+	fmt.Println("Simple Bar 4 /4")
 	bar.SetBarColour(goprogress.Green()).
 		SetFillColour(goprogress.NoColour()).
 		SetBarText("").

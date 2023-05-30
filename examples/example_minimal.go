@@ -18,7 +18,7 @@ func main() {
 		Terminators: []string{"[", "]"},
 	})
 
-	fmt.Println("Detailed Bar")
+	fmt.Println("Simple Bar 1/1")
 	for progress < total {
 		progress++
 		time.Sleep(100 * time.Millisecond)

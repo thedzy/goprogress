@@ -57,7 +57,6 @@ func main() {
 	speedProportion := desiredSpeed / sum * 1000
 
 	fmt.Println("ProgressBars")
-
 	bar := goprogress.NewProgressBar(goprogress.StyleWait, options)
 
 	fmt.Println("Wait Bar")

@@ -40,7 +40,7 @@ func main() {
 	// sum = sum / 1000
 	speedProportion := desiredSpeed / sum * 1000
 
-	fmt.Println("1/4 demos")
+	fmt.Println("Train bar 1/4")
 	animation := []string{
 		strings.Repeat("◟◧◨◝-", int(total/5)) + "◟◧◨◘◺",
 		strings.Repeat("◜◧◨◞-", int(total/5)) + "◜◧◨◘◺",
@@ -56,7 +56,7 @@ func main() {
 	}
 	fmt.Println("\n")
 
-	fmt.Println("2/4 demos")
+	fmt.Println("Train bar 2/4")
 	animation = []string{
 		strings.Repeat("◷◧◨◷-", int(total/5)) + "◷◧◨◘◺",
 		strings.Repeat("◶◧◨◶-", int(total/5)) + "◶◧◨◘◺",
@@ -77,7 +77,7 @@ func main() {
 	}
 	fmt.Println("\n")
 
-	fmt.Println("3/4 demos")
+	fmt.Println("Train bar 3/4")
 
 	progress = 0
 	bar.SetBarTextColour(goprogress.Black())
@@ -94,7 +94,7 @@ func main() {
 	}
 	fmt.Println("\n")
 
-	fmt.Println("4/4 demos")
+	fmt.Println("Train bar 4/4")
 
 	progress = 0
 	bar.SetBarTextColour(goprogress.Black())
@@ -113,11 +113,4 @@ func main() {
 	}
 	fmt.Println("\n")
 
-}
-
-func abs(n int) int {
-	if n < 0 {
-		return -n
-	}
-	return n
 }
