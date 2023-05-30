@@ -29,9 +29,9 @@ func main() {
 	fmt.Println("\n")
 
 	fmt.Println("2/4")
-	bar.SetBarColour(goprogress.Yellow())
-	bar.SetFillColour(goprogress.Blue())
-	bar.SetBarText("")
+	bar.SetBarColour(goprogress.Yellow()).
+		SetFillColour(goprogress.Blue()).
+		SetBarText("")
 	progress = 0
 	for progress < total {
 		progress++
@@ -43,9 +43,9 @@ func main() {
 	fmt.Println("\n")
 
 	fmt.Println("3/4")
-	bar.SetBarColour(goprogress.NoColour())
-	bar.SetFillColour(goprogress.NoColour())
-	bar.SetBarTextColour(goprogress.Red())
+	bar.SetBarColour(goprogress.NoColour()).
+		SetFillColour(goprogress.NoColour()).
+		SetBarTextColour(goprogress.Red())
 	animation := []string{
 		"◠◡",
 		"◡◠",
@@ -56,16 +56,16 @@ func main() {
 		time.Sleep(25 * time.Millisecond)
 
 		// Update the wait bar
-		bar.SetBarText(animation[progress%2])
-		bar.Draw(progress)
+		bar.SetBarText(animation[progress%2]).
+			Draw(progress)
 	}
 	fmt.Println("\n")
 
 	fmt.Println("4 /4")
-	bar.SetBarColour(goprogress.Green())
-	bar.SetFillColour(goprogress.NoColour())
-	bar.SetBarText("")
-	bar.SetFillText("-")
+	bar.SetBarColour(goprogress.Green()).
+		SetFillColour(goprogress.NoColour()).
+		SetBarText("").
+		SetFillText("-")
 	progress = 0
 	for progress < total {
 		progress++
