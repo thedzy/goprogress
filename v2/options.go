@@ -71,8 +71,9 @@ func (o *bar) GetStyle() int8 {
 	return o.style
 }
 
-// SetOptions Set total (max value of the progress bar)
+// SetOptions Set all options
 func (o *bar) SetOptions(options Options) *bar {
+	options = validateOptions(options)
 	o.options = options
 	return o
 }
@@ -228,7 +229,7 @@ func (o *bar) GetTextColours() ([]float32, []float32, []float32, []float32) {
 	return o.options.LightTextColour,
 		o.options.DarkTextColour,
 		o.options.BarTextColour,
-		o.options.FillTextColour,
+		o.options.FillTextColour
 }
 
 // SetDynamicTextColours Forgo the light and dark colour and use the fill/bar colours
