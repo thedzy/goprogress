@@ -5,8 +5,8 @@ import (
 	"reflect"
 )
 
-// Options that apply to all progress bars
-type Options struct {
+// settings that apply to all progress bars
+type settings struct {
 	Total              int
 	Width              int
 	Title              string
@@ -24,6 +24,26 @@ type Options struct {
 	Partials           []string
 	Terminators        []string
 	Mode               int8
+}
+
+type Options struct {
+	Total              *int
+	Width              *int
+	Title              *string
+	Footer             *string
+	BarText            *string
+	FillText           *string
+	Animated           *bool
+	BarColour          *[]float32
+	FillColour         *[]float32
+	LightTextColour    *[]float32
+	DarkTextColour     *[]float32
+	BarTextColour      *[]float32
+	FillTextColour     *[]float32
+	DynamicTextColours *bool
+	Partials           *[]string
+	Terminators        *[]string
+	Mode               *int8
 }
 
 // SetStyleSimple Set style to simple
@@ -64,14 +84,6 @@ func (o *bar) SetStyle(mode int8) {
 }
 func (o *bar) GetStyle() int8 {
 	return o.style
-}
-
-// SetOptions Set total (max value of the progress bar)
-func (o *bar) SetOptions(options Options) {
-	o.options = options
-}
-func (o *bar) GetOptions() Options {
-	return o.options
 }
 
 // SetTotal Set total (max value of the progress bar)
@@ -236,116 +248,132 @@ func (o *bar) GetMode() int8 {
 }
 
 // mergeSettings Merge two settings/options and validate the options
-func mergeSettings(original Options, updated Options) Options {
-	// Assign to some variables for modification
+// mergeSettings Merge two settings/options and validate the options
+func mergeSettings(original settings, updated Options) settings {
 	originalValue := reflect.ValueOf(&original).Elem()
-	updatedValue := reflect.ValueOf(updated)
+	updatedValue := reflect.ValueOf(&updated).Elem()
 
 	for i := 0; i < originalValue.NumField(); i++ {
 		field := originalValue.Field(i)
 		updatedField := updatedValue.Field(i)
 
-		if !reflect.ValueOf(updatedField.Interface()).IsZero() {
-			field.Set(updatedField)
+		if updatedField.Kind() != reflect.Ptr || !updatedField.IsNil() {
+			field.Set(updatedField.Elem())
 		}
 	}
 
-	// Verify we have 2 terminators
-	if len(original.Terminators) < 2 {
-		original.Terminators = append(original.Terminators, "", "")
-	}
-
-	// Keep the minimum width of the bar to 25 and the window width
-	if original.Width < 10 {
-		original.Width = 10
-	}
-	if original.Width > getWindowWidth() {
-		original.Width = getWindowWidth()
-	}
-
-	// Verify that no colour is above 1.0 or below 0.0
-	colours := [][]float32{original.FillColour, original.BarColour, original.LightTextColour, original.DarkTextColour}
-	for _, array := range colours {
-		for index, value := range array[0:3] {
-			if value > 1 {
-				fmt.Println("Error: One or more colour values are greater than 1 and been set to 1")
-				array[index] = 1
-			}
-			if value < 0 {
-				fmt.Println("Error: One or more colour values are greater than 0 and been set to 0")
-				array[index] = 0
-			}
-		}
-	}
-
-	// Verify we have at least one partial
-	if len(original.Partials) == 0 {
-		original.Partials = []string{" "}
-	}
+	// original = validateOptions(original)
 
 	return original
 }
 
 // validateOptions Check all options for valid parameters
-func validateOptions(options Options) Options {
+func validateOptions(options Options) settings {
+	var processedOptions settings
 
-	if options.Total < 1 {
-		options.Total = 100
-	}
-
-	if options.Width < 1 {
-		options.Width = 50
-	}
-
-	if options.BarColour == nil || len(options.BarColour) < 3 {
-		options.BarColour = NoColour()
+	if options.Total == nil || *options.Total < 1 {
+		processedOptions.Total = 100
 	} else {
-		options.BarColour = validationColour(options.BarColour)
+		processedOptions.Total = *options.Total
 	}
 
-	if options.FillColour == nil || len(options.FillColour) < 3 {
-		options.FillColour = NoColour()
+	if options.Width == nil || *options.Width < 1 {
+		processedOptions.Width = 50
 	} else {
-		options.FillColour = validationColour(options.FillColour)
+		processedOptions.Width = *options.Width
 	}
 
-	if options.BarTextColour == nil || len(options.BarTextColour) < 3 {
-		options.BarTextColour = NoColour()
+	if options.Title == nil {
+		processedOptions.Title = ""
 	} else {
-		options.BarTextColour = validationColour(options.BarTextColour)
+		processedOptions.Title = *options.Title
 	}
 
-	if options.FillTextColour == nil || len(options.FillTextColour) < 3 {
-		options.FillTextColour = NoColour()
+	if options.Footer == nil {
+		processedOptions.Footer = ""
 	} else {
-		options.FillTextColour = validationColour(options.FillTextColour)
+		processedOptions.Footer = *options.Footer
 	}
 
-	if options.LightTextColour == nil || len(options.LightTextColour) < 3 {
-		options.LightTextColour = White()
+	if options.BarText == nil {
+		processedOptions.BarText = " "
 	} else {
-		options.LightTextColour = validationColour(options.LightTextColour)
+		processedOptions.BarText = *options.BarText
 	}
 
-	if options.DarkTextColour == nil || len(options.DarkTextColour) < 3 {
-		options.DarkTextColour = Black()
+	if options.FillText == nil {
+		processedOptions.FillText = " "
 	} else {
-		options.DarkTextColour = validationColour(options.DarkTextColour)
+		processedOptions.FillText = *options.FillText
 	}
 
-	if len(options.Partials) == 0 {
-		options.Partials = []string{" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉"}
+	if options.Animated == nil {
+		processedOptions.Animated = false
+	} else {
+		processedOptions.Animated = *options.Animated
 	}
 
-	if len(options.Terminators) < 2 {
-		options.Terminators = []string{"▕", "▏"}
+	if options.BarColour == nil || len(*options.BarColour) < 3 {
+		processedOptions.BarColour = NoColour()
+	} else {
+		processedOptions.BarColour = validationColour(*options.BarColour)
 	}
 
-	if options.Mode < 1 {
-		options.Mode = 1
+	if options.FillColour == nil || len(*options.FillColour) < 3 {
+		processedOptions.FillColour = NoColour()
+	} else {
+		processedOptions.FillColour = validationColour(*options.FillColour)
 	}
 
-	return options
+	if options.BarTextColour == nil || len(*options.BarTextColour) < 3 {
+		processedOptions.BarTextColour = NoColour()
+	} else {
+		processedOptions.BarTextColour = validationColour(*options.BarTextColour)
+	}
+
+	if options.FillTextColour == nil || len(*options.FillTextColour) < 3 {
+		processedOptions.FillTextColour = NoColour()
+	} else {
+		processedOptions.FillTextColour = validationColour(*options.FillTextColour)
+	}
+
+	if options.LightTextColour == nil || len(*options.LightTextColour) < 3 {
+		processedOptions.LightTextColour = White()
+	} else {
+		processedOptions.LightTextColour = validationColour(*options.LightTextColour)
+	}
+
+	if options.DarkTextColour == nil || len(*options.DarkTextColour) < 3 {
+		processedOptions.DarkTextColour = Black()
+	} else {
+		processedOptions.DarkTextColour = validationColour(*options.DarkTextColour)
+	}
+
+	if options.DynamicTextColours == nil {
+		processedOptions.DynamicTextColours = false
+	} else {
+		processedOptions.DynamicTextColours = *options.DynamicTextColours
+	}
+
+	if options.Partials == nil || len(*options.Partials) == 0 {
+		processedOptions.Partials = []string{" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉"}
+	} else {
+		processedOptions.Partials = *options.Partials
+	}
+
+	if options.Terminators == nil || len(*options.Terminators) < 2 {
+		processedOptions.Terminators = []string{"▕", "▏"}
+	} else {
+		processedOptions.Terminators = *options.Terminators
+	}
+
+	if options.Mode == nil || *options.Mode < 1 {
+		processedOptions.Mode = 1
+	} else {
+		processedOptions.Mode = *options.Mode
+	}
+
+	return processedOptions
 
 }
 

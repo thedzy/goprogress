@@ -11,7 +11,7 @@ import (
 type bar struct {
 	style   int8
 	counter int64
-	options Options
+	options settings
 	timer   time.Time
 }
 
@@ -29,11 +29,11 @@ func init() {
 // NewProgressBar Create a new instance of a progress bar
 func NewProgressBar(style int8, options Options) *bar {
 
-	options = validateOptions(options)
+	processedOptions := validateOptions(options)
 
 	progressBar := bar{
 		style:   style,
-		options: options,
+		options: processedOptions,
 	}
 
 	return &progressBar
@@ -47,7 +47,7 @@ func (o *bar) ResetTimer() {
 // Draw the progress with text (and colour)
 func (o *bar) Draw(progress int, overrides ...Options) {
 
-	var options Options
+	var options settings
 	if len(overrides) > 0 {
 		options = mergeSettings(o.options, overrides[0])
 	} else {

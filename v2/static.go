@@ -10,7 +10,7 @@ import (
 )
 
 // getColours Get colours from the options
-func getColours(options Options) ColourCodes {
+func getColours(options settings) ColourCodes {
 
 	// Colours
 	barColour := getAnsiCode(options.BarColour[0], options.BarColour[1], options.BarColour[2], true)
@@ -87,7 +87,7 @@ func colourContrast(red float32, green float32, blue float32) float32 {
 }
 
 // getFooter Get the footer based on the choice and do the calculation
-func getFooter(progress int, timer time.Time, options Options) string {
+func getFooter(progress int, timer time.Time, options settings) string {
 	var footer string
 
 	switch options.Mode {
