@@ -148,7 +148,7 @@ func (o *bar) Draw(progress int, overrides ...Options) {
 		barText := stringToArray(options.BarText)
 		barFill := stringToArray(options.FillText)
 
-		bar = arrayToString(stringArraySizer(barText, barWidth, true, true))
+		bar = arrayToString(stringArraySizer(barText, barWidth, true, false))
 		fill = arrayToString(stringArraySizer(barFill, fillWidth, true, false))
 	}
 
