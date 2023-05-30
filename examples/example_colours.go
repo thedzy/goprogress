@@ -70,7 +70,7 @@ func main() {
 	// Smooth with fraction al character widths
 	fmt.Println("Smooth ProgressBar with colour shifting")
 	progress = 0
-	fractional := 1.0 / float32(total)
+	fractional := 1.0 / (float32(total) + 1)
 	for progress < total {
 		progress++
 		time.Sleep(time.Duration(10) * time.Millisecond)
