@@ -27,209 +27,234 @@ type Options struct {
 }
 
 // SetStyleSimple Set style to simple
-func (o *bar) SetStyleSimple() {
+func (o *bar) SetStyleSimple() *bar {
 	o.style = StyleSimple
+	return o
 }
 func (o *bar) GetStyleSimple() bool {
 	return o.style == StyleSimple
 }
 
 // SetStyleTrain Set style to train
-func (o *bar) SetStyleTrain() {
+func (o *bar) SetStyleTrain() *bar {
 	o.style = StyleTrain
+	return o
 }
 func (o *bar) GetStyleTrain() bool {
 	return o.style == StyleTrain
 }
 
 // SetStyleDetailed Set style to detailed
-func (o *bar) SetStyleDetailed() {
+func (o *bar) SetStyleDetailed() *bar {
 	o.style = StyleDetailed
+	return o
 }
 func (o *bar) GetStyleDetailed() bool {
 	return o.style == StyleDetailed
 }
 
 // SetStyleSmooth Set style to smooth
-func (o *bar) SetStyleSmooth() {
+func (o *bar) SetStyleSmooth() *bar {
 	o.style = StyleSmooth
+	return o
 }
 func (o *bar) GetStyleSmooth() bool {
 	return o.style == StyleSmooth
 }
 
 // SetStyle Set to display style
-func (o *bar) SetStyle(mode int8) {
+func (o *bar) SetStyle(mode int8) *bar {
 	o.style = mode
+	return o
 }
 func (o *bar) GetStyle() int8 {
 	return o.style
 }
 
 // SetOptions Set total (max value of the progress bar)
-func (o *bar) SetOptions(options Options) {
+func (o *bar) SetOptions(options Options) *bar {
 	o.options = options
+	return o
 }
 func (o *bar) GetOptions() Options {
 	return o.options
 }
 
 // SetTotal Set total (max value of the progress bar)
-func (o *bar) SetTotal(total int) {
+func (o *bar) SetTotal(total int) *bar {
 	o.options.Total = total
+	return o
 }
 func (o *bar) GetTotal() int {
 	return o.options.Total
 }
 
 // SetWidth Set the width of the progress bar
-func (o *bar) SetWidth(width int) {
+func (o *bar) SetWidth(width int) *bar {
 	o.options.Width = width
+	return o
 }
 func (o *bar) GetWidth() int {
 	return o.options.Width
 }
 
 // SetTitle Set title at the beginning of the bar
-func (o *bar) SetTitle(title string) {
+func (o *bar) SetTitle(title string) *bar {
 	o.options.Title = title
+	return o
 }
 func (o *bar) GetTitle() string {
 	return o.options.Title
 }
 
 // SetFooter Set text at the end
-func (o *bar) SetFooter(footer string) {
+func (o *bar) SetFooter(footer string) *bar {
 	o.options.Footer = footer
+	return o
 }
 func (o *bar) GetFooter() string {
 	return o.options.Footer
 }
 
 // SetBarText Set text at the end
-func (o *bar) SetBarText(text string) {
+func (o *bar) SetBarText(text string) *bar {
 	o.options.BarText = text
+	return o
 }
 func (o *bar) GetBarText() string {
 	return o.options.BarText
 }
 
 // SetFillText Set text at the end
-func (o *bar) SetFillText(text string) {
+func (o *bar) SetFillText(text string) *bar {
 	o.options.FillText = text
+	return o
 }
 func (o *bar) GetFillText() string {
 	return o.options.FillText
 }
 
 // SetBarColour Set bar colour
-func (o *bar) SetBarColour(colour []float32) {
+func (o *bar) SetBarColour(colour []float32) *bar {
 	o.options.BarColour = validationColour(colour)
+	return o
 }
 func (o *bar) GetBarColour() []float32 {
 	return o.options.BarColour
 }
 
 // SetFillColour Set the fill colour (opposite of the bar)
-func (o *bar) SetFillColour(colour []float32) {
+func (o *bar) SetFillColour(colour []float32) *bar {
 	o.options.FillColour = validationColour(colour)
+	return o
 }
 func (o *bar) GetFillColour() []float32 {
 	return o.options.FillColour
 }
 
 // SetLightTextColour Set text colour that appears over dark colours
-func (o *bar) SetLightTextColour(colour []float32) {
+func (o *bar) SetLightTextColour(colour []float32) *bar {
 	o.options.LightTextColour = validationColour(colour)
+	return o
 }
 func (o *bar) GetLightTextColour() []float32 {
 	return o.options.LightTextColour
 }
 
 // SetDarkTextColour Set text colour that appears over light colours
-func (o *bar) SetDarkTextColour(colour []float32) {
+func (o *bar) SetDarkTextColour(colour []float32) *bar {
 	o.options.DarkTextColour = validationColour(colour)
+	return o
 }
 func (o *bar) GetDarkTextColour() []float32 {
 	return o.options.DarkTextColour
 }
 
 // SetBarTextColour Set text colour that appears over dark colours
-func (o *bar) SetBarTextColour(colour []float32) {
+func (o *bar) SetBarTextColour(colour []float32) *bar {
 	o.options.BarTextColour = validationColour(colour)
+	return o
 }
 func (o *bar) GetBarTextColour() []float32 {
 	return o.options.BarTextColour
 }
 
 // SetFillTextColour Set text colour that appears over light colours
-func (o *bar) SetFillTextColour(colour []float32) {
+func (o *bar) SetFillTextColour(colour []float32) *bar {
 	o.options.FillTextColour = validationColour(colour)
+	return o
 }
 func (o *bar) GetFillTextColour() []float32 {
 	return o.options.FillTextColour
 }
 
 // SetDynamicTextColours Forgo the light and dark colour and use the fill/bar colours
-func (o *bar) SetDynamicTextColours(dynamic bool) {
+func (o *bar) SetDynamicTextColours(dynamic bool) *bar {
 	o.options.DynamicTextColours = dynamic
-
+	return o
 }
 func (o *bar) GetDynamicTextColours() bool {
 	return o.options.DynamicTextColours
 }
 
 // SetPartials Set partials for the smooth bar
-func (o *bar) SetPartials(partials []string) {
+func (o *bar) SetPartials(partials []string) *bar {
 	o.options.Partials = partials
+	return o
 }
 func (o *bar) GetPartials() []string {
 	return o.options.Partials
 }
 
 // SetTerminators Set the start and end character for the bar
-func (o *bar) SetTerminators(start string, end string) {
+func (o *bar) SetTerminators(start string, end string) *bar {
 	o.options.Terminators = []string{start, end}
+	return o
 }
 func (o *bar) GetTerminators() []string {
 	return o.options.Terminators
 }
 
 // SetModeNone Set to hide progress/timer/proportion
-func (o *bar) SetModeNone() {
+func (o *bar) SetModeNone() *bar {
 	o.options.Mode = ModeNone
+	return o
 }
 func (o *bar) GetModeNone() bool {
 	return o.options.Mode == ModeNone
 }
 
 // SetModePercent Set to display progress
-func (o *bar) SetModePercent() {
+func (o *bar) SetModePercent() *bar {
 	o.options.Mode = ModePercent
+	return o
 }
 func (o *bar) GetModePercent() bool {
 	return o.options.Mode == ModePercent
 }
 
 // SetModeTimer Set to display to timer
-func (o *bar) SetModeTimer() {
+func (o *bar) SetModeTimer() *bar {
 	o.options.Mode = ModeTimer
+	return o
 }
 func (o *bar) GetModeTimer() bool {
 	return o.options.Mode == ModeTimer
 }
 
 // SetModePortions Set to display portions
-func (o *bar) SetModePortions() {
+func (o *bar) SetModePortions() *bar {
 	o.options.Mode = ModeProportion
+	return o
 }
 func (o *bar) GetModePortions() bool {
 	return o.options.Mode == ModeProportion
 }
 
 // SetMode Set to display the mode
-func (o *bar) SetMode(mode int8) {
+func (o *bar) SetMode(mode int8) *bar {
 	o.options.Mode = mode
+	return o
 }
 func (o *bar) GetMode() int8 {
 	return o.options.Mode
