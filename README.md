@@ -185,6 +185,12 @@ Options with no effect
 - DynamicTextColours
 
 ## Methods
+All Set method return the parent and can be chained
+Example 
+```go 
+bar.SetStyle(goprogress.StyleSimple).
+	SetMode(goprogress.ModePercent)
+````
 
 ### NewProgressBar Create a new instance of a progress bar
 
@@ -258,6 +264,11 @@ Options with no effect
 - SetFillText(text string)
 - GetFillText() string
 
+### SetText Set all text
+
+- SetText(title string, footer string, barText string, fillText string)
+- GetText() (string, string, string, string)
+
 ### SetBarColour Set bar colour
 
 - SetBarColour(colour []float32)
@@ -267,6 +278,11 @@ Options with no effect
 
 - SetFillColour(colour []float32)
 - GetFillColour() []float32
+
+### SetColours Set bar and fill colour
+
+- SetColours(barColour []float32, fillColour []float32)
+- GetColours() ([]float32, []float32)
 
 ### SetLightTextColour Set text colour that appears over dark colours
 
@@ -287,6 +303,11 @@ Options with no effect
 
 - SetFillTextColour(colour []float32)
 - GetFillTextColour() []float32
+
+### SetTextColours Set all text colours
+
+- SetTextColours(lightTextColour []float32, darkTextColour []float32, arTextColour []float32, fillTextColour []float32)
+- GetTextColours() ([]float32, []float32, []float32, []float32)
 
 ### SetDynamicTextColours Forgo the light and dark colour and use the fill/bar colours
 
@@ -423,6 +444,9 @@ If it's trying to download a version that does not exist: \
 ### 2.1.1
 
 - Updated to take options at the Draw command. Due to limitations with GO, you cannot override any parameter with 0, or
-  false or "". One day I will make this pointers, but there is a lot of change to accommodate
+  false or "". ~~One day I will make this pointers, but there is a lot of change to accommodate~~
 - Slight reorganisation in code
 - Fixed an error when passing an empty string to the wait bar.
+
+### 2.1.2
+_ Add more ways to set options
