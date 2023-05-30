@@ -134,6 +134,22 @@ func (o *bar) GetFillText() string {
 	return o.options.FillText
 }
 
+// SetText Set all text
+func (o *bar) SetText(title string, footer string,
+	barText string, fillText string) *bar {
+	o.options.Title = title
+	o.options.Footer = footer
+	o.options.BarText = barText
+	o.options.FillText = fillText
+	return o
+}
+func (o *bar) GetText() (string, string, string, string) {
+	return o.options.Title,
+		o.options.Footer,
+		o.options.BarText,
+		o.options.FillText
+}
+
 // SetBarColour Set bar colour
 func (o *bar) SetBarColour(colour []float32) *bar {
 	o.options.BarColour = validationColour(colour)
@@ -150,6 +166,17 @@ func (o *bar) SetFillColour(colour []float32) *bar {
 }
 func (o *bar) GetFillColour() []float32 {
 	return o.options.FillColour
+}
+
+// SetColours Set bar and fill colour
+func (o *bar) SetColours(barColour []float32, fillColour []float32) *bar {
+	o.options.BarColour = validationColour(barColour)
+	o.options.FillColour = validationColour(fillColour)
+	return o
+}
+func (o *bar) GetColours() ([]float32, []float32) {
+	return o.options.BarColour,
+		o.options.FillColour
 }
 
 // SetLightTextColour Set text colour that appears over dark colours
@@ -186,6 +213,22 @@ func (o *bar) SetFillTextColour(colour []float32) *bar {
 }
 func (o *bar) GetFillTextColour() []float32 {
 	return o.options.FillTextColour
+}
+
+// SetTextColours Set all text colours
+func (o *bar) SetTextColours(lightTextColour []float32, darkTextColour []float32,
+	barTextColour []float32, fillTextColour []float32) *bar {
+	o.options.LightTextColour = validationColour(lightTextColour)
+	o.options.DarkTextColour = validationColour(darkTextColour)
+	o.options.BarTextColour = validationColour(barTextColour)
+	o.options.FillTextColour = validationColour(fillTextColour)
+	return o
+}
+func (o *bar) GetTextColours() ([]float32, []float32, []float32, []float32) {
+	return o.options.LightTextColour,
+		o.options.DarkTextColour,
+		o.options.BarTextColour,
+		o.options.FillTextColour,
 }
 
 // SetDynamicTextColours Forgo the light and dark colour and use the fill/bar colours
