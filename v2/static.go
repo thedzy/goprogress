@@ -199,11 +199,3 @@ func stringArraySizer(strArray []string, length int, repeat bool, alignRight boo
 		}
 	}
 }
-
-func countUniqueCharacters(s string) int {
-	uniqueSet := make(map[rune]bool)
-	for _, char := range s {
-		uniqueSet[char] = true
-	}
-	return len(uniqueSet)
-}
