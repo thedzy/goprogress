@@ -24,7 +24,7 @@ func main() {
 	fmt.Println("Simple Bar 1/1")
 	for progress < total {
 		progress++
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(50 * time.Millisecond)
 
 		// Update the wait bar
 		bar.Draw(progress)
