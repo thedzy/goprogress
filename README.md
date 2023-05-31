@@ -348,6 +348,10 @@ bar.SetStyle(goprogress.StyleSimple).
 
 - SetMode(mode int8)
 - GetMode() int8
+ 
+### getRGB from ansi code (16-255)
+- GetRGB(ansi int)
+
 
 ### Sample
 
@@ -449,4 +453,8 @@ If it's trying to download a version that does not exist: \
 - Fixed an error when passing an empty string to the wait bar.
 
 ### 2.1.2
-_ Add more ways to set options
+- Add more ways to set options
+
+### 2.2.0
+- Added GetRGB (from ansi code) 16-255
+- Improved forumula for getAnsi (from rgb)
