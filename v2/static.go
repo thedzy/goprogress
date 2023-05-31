@@ -201,9 +201,9 @@ func stringArraySizer(strArray []string, length int, repeat bool, alignRight boo
 }
 
 // getRGB from ansi code
-func GetRGB(ansi int) (float32, float32, float32) {
+func GetRGB(ansi int) []float32 {
 	if ansi <= 16 {
-		return 0.0, 0.0, 0.0
+		return []float32{0.0, 0.0, 0.0}
 	} else if ansi <= 231 {
 		var r, g, b int
 		ansi -= 16
@@ -212,13 +212,13 @@ func GetRGB(ansi int) (float32, float32, float32) {
 		g = (ansi % 36) / 6
 		b = (ansi % 36) % 6
 
-		return float32(r) / 5.0, float32(g) / 5.0, float32(b) / 5.0
+		return []float32{float32(r) / 5.0, float32(g) / 5.0, float32(b) / 5.0}
 	} else if ansi <= 255 {
 		grey := ansi - 232
 		k := float32(grey) * (1.0 / 23.0)
-		return k, k, k
+		return []float32{k, k, k}
 	} else {
-		return 0.0, 0.0, 0.0
+		return []float32{0.0, 0.0, 0.0}
 	}
 
 }
