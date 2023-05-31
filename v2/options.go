@@ -432,7 +432,7 @@ func validationColour(colour []float32) []float32 {
 			colour[index] = 1
 
 		} else if value < 0 {
-			fmt.Println("Error: One or more colour values are greater than 0 and been set to 0")
+			fmt.Println("Error: One or more colour values are less than 0 and been set to 0")
 			colour[index] = 0
 		}
 	}
