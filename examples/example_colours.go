@@ -16,6 +16,7 @@ func main() {
 		BarText: " ",
 		Mode:    goprogress.ModeNone,
 	})
+	
 	lastColour := goprogress.White()
 	colours := [][]float32{
 		goprogress.LtGrey(),
@@ -82,4 +83,42 @@ func main() {
 		})
 	}
 	fmt.Println("\n")
+
+	fmt.Println("Smooth ProgressBar with every ansi code")
+	progress = 0
+	bar.SetTotal(239)
+	progress = 0
+
+	timeMultiplier := 150
+	x := 16
+	for i := 0; i < 18; i++ {
+		progress++
+		time.Sleep(time.Duration(timeMultiplier) * time.Millisecond)
+		bar.SetTitle(fmt.Sprintf("%3d", x)).SetBarColour(goprogress.GetRGB(x)).Draw(progress)
+
+		for y := 0; y < 5; y++ {
+			x = x + 36
+			progress++
+			time.Sleep(time.Duration(timeMultiplier) * time.Millisecond)
+			bar.SetTitle(fmt.Sprintf("%3d", x)).SetBarColour(goprogress.GetRGB(x)).Draw(progress)
+		}
+		x++
+		progress++
+		time.Sleep(time.Duration(timeMultiplier) * time.Millisecond)
+		bar.SetTitle(fmt.Sprintf("%3d", x)).SetBarColour(goprogress.GetRGB(x)).Draw(progress)
+
+		for z := 0; z < 5; z++ {
+			x = x - 36
+			progress++
+			time.Sleep(time.Duration(timeMultiplier) * time.Millisecond)
+			bar.SetTitle(fmt.Sprintf("%3d", x)).SetBarColour(goprogress.GetRGB(x)).Draw(progress)
+		}
+		x++
+	}
+	for x = 255; x >= 231; x-- {
+		progress++
+		time.Sleep(time.Duration(timeMultiplier) * time.Millisecond)
+		bar.SetTitle(fmt.Sprintf("%3d", x)).SetBarColour(goprogress.GetRGB(x)).Draw(progress)
+	}
+
 }
